@@ -11,11 +11,11 @@ node index.js
 
 ## Client side usage
 
-The default path is
+The default whiteboard path is
 ```
 [server address]:3000/whiteboard
 ```
-For stylus devices, you can provide a hash tag to allow only stylus input, i.e. 
+For stylus devices, you can provide a hash tag to allow stylus input only, i.e. 
 ```
 [server address]:3000/whiteboard#stylusOnly
 ```
