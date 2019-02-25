@@ -6,11 +6,11 @@ var fs = require('fs');
 var NUM_BOARDS = 4;
 
 var participants = [];
-var nextClientId = 0;
+var nextClientId = 0;  // For unique client id.
 var pingId = 0;
-var pingTime = null;
+var pingTime = null;  // For calculating latency.
 var boards = null;
-var filename = 'boards.json';
+var filename = 'boards.json';  // For saving and loading boards.
 
 if (fs.existsSync(filename)) {
   var contents = fs.readFileSync(filename, 'utf8');
@@ -45,6 +45,7 @@ io.on('connection', function (socket) {
     address: address
   });
 
+  // Find index of clientId in participants.
   var findIndex = function (clientId) {
     if (participants[lastIndex] && participants[lastIndex].clientId === clientId) {
       return lastIndex;
@@ -68,7 +69,7 @@ io.on('connection', function (socket) {
     var p = participants[index];
     var rtt = new Date().getTime() - pingTime;
     if (!p.latency) p.latency = 0;
-    p.latency = Math.round(rtt * 0.5 + p.latency * 0.25);
+    p.latency = Math.round(rtt * 0.5 + p.latency * 0.25);  // 0.5 Momentum.
   });
 
   socket.on('draw', function (msg) {
@@ -90,6 +91,7 @@ io.on('connection', function (socket) {
   socket.emit('load', loadMsg);
 });
 
+// Periodically ping for latency.
 setInterval(function () {
   pingId = pingId + 1;
   pingTime = new Date().getTime();
@@ -99,6 +101,7 @@ setInterval(function () {
   });
 }, 2000);
 
+// Periodically save to file.
 setInterval(function () {
   fs.writeFile(filename, JSON.stringify(boards), function (err) {
     if (err) {
