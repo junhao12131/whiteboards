@@ -32,7 +32,7 @@ app.get('/whiteboard', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/whiteboard/main.js', function (req, res) {
+app.get('/main.js', function (req, res) {
   res.sendFile(__dirname + '/main.js');
 });
 
