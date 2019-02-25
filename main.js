@@ -77,10 +77,10 @@ var whiteboard = {};
 // Canvas module.
 (function (whiteboard, document) {
   var COLOR = {
-    BLACK: 'rgba(33, 33, 33, 1)',
+    BLACK: 'rgba(33, 33, 33, 0.8)',
     RED: 'rgba(219, 50, 54, 1)',
     GREEN: 'rgba(60, 186, 84, 1)',
-    BLUE: 'rgba(72, 100, 235, 1)',
+    BLUE: 'rgba(72, 120, 235, 1)',
     WHITE: 'rgba(255, 255, 255, 0.3)'
   };
   var COLORS = ['BLACK', 'RED', 'GREEN', 'BLUE', 'WHITE'];
@@ -109,8 +109,8 @@ var whiteboard = {};
 
   var status = {
     boardId: 0,
-    colorId: 0,
-    color: COLOR.BLACK,
+    colorId: 2,
+    color: COLOR.GREEN,
     size: SIZE.DRAW,
     position: {
       x: 0,

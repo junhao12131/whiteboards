@@ -1,7 +1,19 @@
 var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
 var fs = require('fs');
+
+// Certificate
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/whiteboard.junhao12131.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/whiteboard.junhao12131.com/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/whiteboard.junhao12131.com/chain.pem', 'utf8');
+
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+  ca: ca
+};
+
+var https = require('https').Server(credentials, app);
+var io = require('socket.io')(https);
 
 var NUM_BOARDS = 4;
 
@@ -20,19 +32,11 @@ if (fs.existsSync(filename)) {
   for (var i = 0; i < NUM_BOARDS; i++)  boards.push([]);
 }
 
-app.get('/.well-known/acme-challenge/:filename', function(req, res) {
-  res.send(__dirname + '/cert/' + req.params.filename);
-});
-
-app.get('/', function (req, res) {
-  res.send('Hello World');
-});
-
-app.get('/whiteboard', function (req, res) {
+app.get('/facebook', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/whiteboard/main.js', function (req, res) {
+app.get('/main.js', function (req, res) {
   res.sendFile(__dirname + '/main.js');
 });
 
@@ -116,6 +120,6 @@ setInterval(function () {
   });
 }, 3000);
 
-http.listen(3000, function () {
-  console.log('listening on *:3000');
+https.listen(443, function () {
+  console.log('listening');
 });
