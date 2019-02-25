@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+
+<head lang="en">
+  <meta charset="utf-8">
+  <title>Whiteboard</title>
+  <style>
+    #board {
+      border: 1px dashed grey;
+      position: relative;
+    }
+
+    input {
+      margin-right: 0;
+    }
+
+    label {
+      display: inline-block;
+      margin: 0 8px 0 0;
+      padding: 8px;
+    }
+
+    .participants * {
+      display: inline-block;
+      margin-right: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="control">
+      <input type="radio" name="board-id" value="0" id="board-1" checked="checked" autocomplete="off"><label
+        for="board-1">Board 1</label>
+      <input type="radio" name="board-id" value="1" id="board-2" autocomplete="off"><label for="board-2">Board 2</label>
+      <input type="radio" name="board-id" value="2" id="board-3" autocomplete="off"><label for="board-3">Board 3</label>
+      <input type="radio" name="board-id" value="3" id="board-4" autocomplete="off"><label for="board-4">Board 4</label>
+      <label>|</label>
+      <input type="radio" name="action-id" value="black" id="action-black" checked="checked" autocomplete="off"><label
+        for="action-black">Black</label>
+      <input type="radio" name="action-id" value="red" id="action-red" autocomplete="off"><label
+        for="action-red">Red</label>
+      <input type="radio" name="action-id" value="green" id="action-green" autocomplete="off"><label
+        for="action-green">Green</label>
+      <input type="radio" name="action-id" value="blue" id="action-blue" autocomplete="off"><label
+        for="action-blue">Blue</label>
+      <input type="radio" name="action-id" value="erase" id="action-erase" autocomplete="off"><label
+        for="action-erase">Erase</label>
+      <button id="clear">Clear</button>
+    </div>
+    <canvas id="board" width="960" height="540"></canvas>
+    <div><a href="javascript:;" id="download">Download</a></div>
+    <div class="participants">
+      <span>Participants:</span>
+      <div id="participants">
+      </div>
+    </div>
+    <div id="debug"></div>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/whiteboard/main.js"></script>
+</body>
+
+</html>
