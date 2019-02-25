@@ -2,9 +2,10 @@ var app = require('express')();
 var fs = require('fs');
 
 // Certificate
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/whiteboard.junhao12131.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/whiteboard.junhao12131.com/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/whiteboard.junhao12131.com/chain.pem', 'utf8');
+const certDir = './cert/';
+const privateKey = fs.readFileSync(certDir + 'privkey.pem', 'utf8');
+const certificate = fs.readFileSync(certDir + 'cert.pem', 'utf8');
+const ca = fs.readFileSync(certDir + 'chain.pem', 'utf8');
 
 const credentials = {
   key: privateKey,
@@ -32,7 +33,7 @@ if (fs.existsSync(filename)) {
   for (var i = 0; i < NUM_BOARDS; i++)  boards.push([]);
 }
 
-app.get('/facebook', function (req, res) {
+app.get('/facebook123', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
