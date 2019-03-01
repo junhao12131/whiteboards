@@ -291,10 +291,10 @@ var whiteboard = {};
     removeCanaryBySender(whiteboard.clientId);
     if (n < 4) {
       loadMem();
+      drawElement(status.points, color, status.size, uiCtx);
       canary.points = whiteboard.utils.shallowCopy(status.points);
       canary.colorId = status.colorId;
       canary.size = status.size;
-      drawElement(status.points, color, status.size, uiCtx);
       status.canaries.push(canary);
       whiteboard.sendDraw({ boardId: status.boardId, canary: canary });
     } else if (n >= 4) {
@@ -305,18 +305,20 @@ var whiteboard = {};
       var endPoint = whiteboard.utils.getMidPoint(status.points[n - 3], status.points[n - 2]);
       drawCurve(startPoint, status.points[n - 3], endPoint, color, status.size, memCtx);
       loadMem();
+      var canaryEnd = whiteboard.utils.shallowCopy(status.points[n - 1]);
+      drawCurve(endPoint, status.points[n - 2], canaryEnd, color, status.size, uiCtx);
+      drawCanaries();
       var elem = {
         points: [startPoint, status.points[n - 3], endPoint],
         colorId: status.colorId,
         size: status.size
       };
       boards[status.boardId].push(elem);
-      canary.points = [endPoint, status.points[n - 2], status.points[n - 1]];
+      canary.points = [endPoint, status.points[n - 2], canaryEnd];
       canary.colorId = elem.colorId;
       canary.size = elem.size;
       status.canaries.push(canary);
       whiteboard.sendDraw({ boardId: status.boardId, elem: elem, canary: canary });
-      drawCanaries();
     }
   };
 

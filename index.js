@@ -4,13 +4,15 @@ var io = require('socket.io')(http);
 var fs = require('fs');
 
 var NUM_BOARDS = 4;
+var PORT = '8080';
 
 var participants = [];
 var nextClientId = 0;  // For unique client id.
 var pingId = 0;
 var pingTime = null;  // For calculating latency.
 var boards = null;
-var filename = 'boards.json';  // For saving and loading boards.
+var boardName = 'facebookinterview';
+var filename = `data/${boardName}.json`;  // For saving and loading boards.
 
 if (fs.existsSync(filename)) {
   var contents = fs.readFileSync(filename, 'utf8');
@@ -20,15 +22,7 @@ if (fs.existsSync(filename)) {
   for (var i = 0; i < NUM_BOARDS; i++)  boards.push([]);
 }
 
-app.get('/.well-known/acme-challenge/:filename', function(req, res) {
-  res.send(__dirname + '/cert/' + req.params.filename);
-});
-
-app.get('/', function (req, res) {
-  res.send('Hello World');
-});
-
-app.get('/whiteboard', function (req, res) {
+app.get(`/${boardName}`, function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
@@ -42,7 +36,8 @@ io.on('connection', function (socket) {
 
   var lastIndex = null;
 
-  var address = socket.handshake.address;
+  var address = socket.handshake.headers['x-real-ip'];
+  address = address || socket.handshake.address;
 
   participants.push({
     clientId: clientId,
@@ -110,12 +105,10 @@ setInterval(function () {
   fs.writeFile(filename, JSON.stringify(boards), function (err) {
     if (err) {
       console.log(err);
-    } else {
-      console.log('boards saved.');
     }
   });
-}, 3000);
+}, 5000);
 
-http.listen(3000, function () {
-  console.log('listening on *:3000');
+http.listen(PORT, function () {
+  console.log(`listening on ${PORT}`);
 });
